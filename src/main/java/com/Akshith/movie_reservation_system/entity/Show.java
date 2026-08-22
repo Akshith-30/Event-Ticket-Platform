@@ -1,33 +1,38 @@
 package com.Akshith.movie_reservation_system.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 @Entity
 public class Show {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+    @ToString.Include
+    private Long id;
 
     @ManyToOne(targetEntity = Movie.class)
-    @JoinColumn(referencedColumnName =  "id", nullable = false)
-    Movie movie;
+    @JoinColumn(name = "movie_id", referencedColumnName = "id", nullable = false)
+    private Movie movie;
 
-    @ManyToOne()
-    Theater theater;
-    LocalDateTime startTime;
-    LocalDateTime endTime;
+    @ManyToOne
+    @JoinColumn(name = "theater_id", nullable = false)
+    private Theater theater;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    List<Seat> seats;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+
+    @OneToMany(mappedBy = "show", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Seat> seats;
 }

@@ -2,30 +2,37 @@ package com.Akshith.movie_reservation_system.entity;
 
 import com.Akshith.movie_reservation_system.enums.MovieGenre;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 @Entity
 public class Movie {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+    @ToString.Include
+    private Long id;
+
+    @ToString.Include
     private String movieName;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "movie_genres", joinColumns = @JoinColumn(name = "movie_id"))
     @Enumerated(EnumType.STRING)
-    List<MovieGenre> genre;
-    int movieLength;
-    String movieLanguage;
-    LocalDate releaseDate;
+    @Column(name = "genre")
+    private List<MovieGenre> genre;
 
+    private int movieLength;
+    private String movieLanguage;
+    private LocalDate releaseDate;
 }
