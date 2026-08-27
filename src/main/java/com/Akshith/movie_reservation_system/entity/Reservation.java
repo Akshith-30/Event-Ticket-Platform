@@ -35,7 +35,8 @@ public class Reservation {
     @JoinTable(
             name = "reservation_seats",
             joinColumns = @JoinColumn(name = "reservation_id"),
-            inverseJoinColumns = @JoinColumn(name = "seat_id")
+            inverseJoinColumns = @JoinColumn(name = "seat_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = "seat_id")
     )
     private List<Seat> seatsReserved;
 
