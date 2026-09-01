@@ -16,6 +16,9 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
     List<Seat> findByShowId(Long showId);
     List<Seat> findByShowIdAndStatus(Long showId, SeatStatus status);
 
+    long countByShowId(Long showId);
+    long countByShowIdAndStatus(Long showId, SeatStatus status);
+
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select s from Seat s where s.id in :ids")
     List<Seat> findAllByIdForUpdate(@Param("ids") List<Long> ids);
